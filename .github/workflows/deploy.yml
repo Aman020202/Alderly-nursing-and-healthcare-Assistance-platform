@@ -1,0 +1,43 @@
+name: Deploy Alderly Platform
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: './server/package-lock.json'
+
+    - name: Install Backend Dependencies
+      run: |
+        cd server
+        npm ci
+
+    - name: Install Frontend Dependencies
+      run: |
+        cd client
+        npm install
+
+    - name: Build Frontend
+      run: |
+        cd client
+        npm run build
+
+  # Example deployment job (requires secrets configured)
+  # deploy:
+  #   needs: build-and-test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Deploy to Production
+  #     run: echo "Add your deployment scripts here (e.g., SSH to server, push to Vercel/Render)"
