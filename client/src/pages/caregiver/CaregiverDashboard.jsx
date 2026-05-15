@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from '../../../context/AuthContext';
-import VerificationBadge from '../../../components/VerificationBadge';
+import { useAuth } from '../../context/AuthContext';
+import VerificationBadge from '../../components/VerificationBadge';
 import { AlertCircle, FileText, UserCheck, Edit3 } from 'lucide-react';
 
 const CaregiverDashboard = () => {

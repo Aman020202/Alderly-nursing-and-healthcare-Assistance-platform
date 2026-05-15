@@ -72,6 +72,10 @@ app.use('/api/notifications', notificationRoutes);
 // Serve static uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-const PORT = process.env.PORT || 5000;
+// Only start the server if not running in a serverless environment (like Vercel)
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  const PORT = process.env.PORT || 5000;
+  server.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+}
 
-server.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+export default app;

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import VerificationBadge from '../../../components/VerificationBadge';
+import VerificationBadge from '../../components/VerificationBadge';
 import { ArrowLeft, UserCheck, FileText, CheckCircle, XCircle } from 'lucide-react';
 
 const CaregiverDetailReview = () => {
