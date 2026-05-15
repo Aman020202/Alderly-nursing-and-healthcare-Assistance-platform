@@ -12,7 +12,7 @@ const BookingSummary = () => {
     const fetchBooking = async () => {
       try {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/bookings/${id}`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+          headers: { Authorization: `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}` }
         });
         setBooking(res.data);
       } catch (err) {

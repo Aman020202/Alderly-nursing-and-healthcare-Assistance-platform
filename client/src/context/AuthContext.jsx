@@ -7,7 +7,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('token') || null);
+  const [token, setToken] = useState(localStorage.getItem('token') || sessionStorage.getItem('token') || null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 

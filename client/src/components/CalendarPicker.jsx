@@ -47,7 +47,7 @@ const CalendarPicker = ({ caregiverId, onScheduleChange }) => {
           endDate: endIso
         },
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}` // Ensure protected route can be accessed
+          Authorization: `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}`
         }
       });
 

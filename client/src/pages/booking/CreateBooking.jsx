@@ -42,7 +42,7 @@ const CreateBooking = () => {
         const [cgRes, pRes] = await Promise.all([
           axios.get(`${import.meta.env.VITE_API_URL}/caregiver-search/${caregiverId}`),
           axios.get(`${import.meta.env.VITE_API_URL}/patients`, {
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+            headers: { Authorization: `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}` }
           })
         ]);
         setCaregiver(cgRes.data);
@@ -107,7 +107,7 @@ const CreateBooking = () => {
       };
 
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/bookings`, payload, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        headers: { Authorization: `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}` }
       });
       
       // Navigate to summary

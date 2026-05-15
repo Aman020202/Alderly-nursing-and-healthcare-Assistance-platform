@@ -33,6 +33,21 @@ const upload = multer({
   }
 });
 
+// Middleware to parse JSON strings from form-data
+const parseJsonFields = (req, res, next) => {
+  const fields = ['medicalConditions', 'medications', 'allergies', 'emergencyContact'];
+  fields.forEach(field => {
+    if (req.body[field] && typeof req.body[field] === 'string') {
+      try {
+        req.body[field] = JSON.parse(req.body[field]);
+      } catch (err) {
+        console.error(`Error parsing field ${field}:`, err);
+      }
+    }
+  });
+  next();
+};
+
 // @route   GET /api/patients
 // @desc    Get all patients for the logged-in family user
 // @access  Private
@@ -66,6 +81,7 @@ router.post(
   '/',
   protect,
   upload.single('profilePicture'),
+  parseJsonFields,
   [
     body('name', 'Name is required').not().isEmpty(),
     body('age', 'Valid age is required').isNumeric(),
@@ -91,20 +107,6 @@ router.post(
         familyUserId: req.user.id,
       };
 
-      // Parse JSON strings back to objects/arrays if they were sent as form-data strings
-      if (typeof patientData.medicalConditions === 'string') {
-        patientData.medicalConditions = JSON.parse(patientData.medicalConditions);
-      }
-      if (typeof patientData.medications === 'string') {
-        patientData.medications = JSON.parse(patientData.medications);
-      }
-      if (typeof patientData.allergies === 'string') {
-        patientData.allergies = JSON.parse(patientData.allergies);
-      }
-      if (typeof patientData.emergencyContact === 'string') {
-        patientData.emergencyContact = JSON.parse(patientData.emergencyContact);
-      }
-
       if (req.file) {
         patientData.profilePicture = `/uploads/${req.file.filename}`;
       }
@@ -127,23 +129,10 @@ router.put(
   protect,
   checkPatientOwnership,
   upload.single('profilePicture'),
+  parseJsonFields,
   async (req, res) => {
     try {
       let updateData = { ...req.body };
-
-      // Parse JSON strings if needed
-      if (typeof updateData.medicalConditions === 'string') {
-        updateData.medicalConditions = JSON.parse(updateData.medicalConditions);
-      }
-      if (typeof updateData.medications === 'string') {
-        updateData.medications = JSON.parse(updateData.medications);
-      }
-      if (typeof updateData.allergies === 'string') {
-        updateData.allergies = JSON.parse(updateData.allergies);
-      }
-      if (typeof updateData.emergencyContact === 'string') {
-        updateData.emergencyContact = JSON.parse(updateData.emergencyContact);
-      }
 
       if (req.file) {
         updateData.profilePicture = `/uploads/${req.file.filename}`;

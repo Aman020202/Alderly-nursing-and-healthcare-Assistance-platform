@@ -16,7 +16,7 @@ const MyBookings = () => {
     setLoading(true);
     try {
       const res = await axios.get(`${import.meta.env.VITE_API_URL}/bookings?page=${page}&status=${activeTab}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        headers: { Authorization: `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}` }
       });
       setBookings(res.data.bookings);
       setTotalPages(res.data.totalPages);
