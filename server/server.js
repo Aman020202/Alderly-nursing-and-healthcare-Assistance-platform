@@ -19,7 +19,11 @@ const server = createServer(app);
 const io = initSocket(server);
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: process.env.CLIENT_URL, // .env mein Vercel ka URL dalenge
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 app.use(express.json());
 
 // Apply Security
